@@ -45,18 +45,17 @@ use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
-use pocketmine\Server;
 
 class EndPortal extends Solid {
 
 	/** @var int $id */
 	protected $id = Block::END_PORTAL;
 
-    public function __construct($meta = 0) {
-        $this->meta = $meta;
-    }
+	public function __construct($meta = 0){
+		$this->meta = $meta;
+	}
 
-    /**
+	/**
 	 * @return int
 	 */
 	public function getLightLevel(): int{
@@ -120,10 +119,11 @@ class EndPortal extends Solid {
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){
 					if($entity->getLevel() instanceof Level){
+					    $plug = Main::getInstance();
 						if($entity->getLevel()->getName() != Main::$endName){ // OVERWORLD -> END
-							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
+							$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::THE_END, Main::$endLevel->getSafeSpawn()), 1);
 						}else{ // END -> OVERWORLD
-							Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, Main::$overworldLevel->getSafeSpawn()), 1);
+							$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, Main::$overworldLevel->getSafeSpawn()), 1);
 						}
 					}
 				}

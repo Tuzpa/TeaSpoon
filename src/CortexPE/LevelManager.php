@@ -38,7 +38,6 @@ namespace CortexPE;
 use CortexPE\level\generator\{
 	ender\Ender, hell\Nether, VoidGenerator
 };
-use pocketmine\level\generator\Generator;
 use pocketmine\level\generator\GeneratorManager;
 use pocketmine\Server as PMServer;
 
@@ -55,9 +54,9 @@ class LevelManager {
 
 	private static function registerGenerators(){
 		Main::getPluginLogger()->debug("Registering Generators...");
-        //GeneratorManager::addGenerator(Nether::class, "nether"); Not used anymore
-        GeneratorManager::addGenerator(Ender::class, "ender");
-        GeneratorManager::addGenerator(VoidGenerator::class, "void");
+		GeneratorManager::addGenerator(Nether::class, "teanether");
+		GeneratorManager::addGenerator(Ender::class, "ender");
+		GeneratorManager::addGenerator(VoidGenerator::class, "void");
 	}
 
 	private static function loadAndGenerateLevels(){

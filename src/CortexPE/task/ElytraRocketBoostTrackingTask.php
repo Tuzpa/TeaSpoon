@@ -36,16 +36,11 @@ declare(strict_types = 1);
 namespace CortexPE\task;
 
 use CortexPE\level\particle\RocketParticle;
+use CortexPE\Main;
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
-use pocketmine\scheduler\PluginTask;
 use pocketmine\scheduler\Task;
-use pocketmine\Server as PMServer;
 
 class ElytraRocketBoostTrackingTask extends Task {
-
-    private $owner;
-
 	/** @var Player */
 	protected $player;
 
@@ -55,8 +50,7 @@ class ElytraRocketBoostTrackingTask extends Task {
 	/** @var int */
 	private $internalCount = 1;
 
-	public function __construct(Plugin $owner, Player $player, int $count){
-	    $this->owner = $owner;
+	public function __construct(Player $player, int $count){
 		$this->player = $player;
 		$this->count = $count;
 	}
@@ -70,7 +64,7 @@ class ElytraRocketBoostTrackingTask extends Task {
 			)));
 			$this->internalCount++;
 		}else{
-			$this->owner->getScheduler()->cancelTask($this->getTaskId());
+			Main::getInstance()->getScheduler()->cancelTask($this->getTaskId());
 		}
 	}
 }

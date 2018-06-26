@@ -23,6 +23,7 @@ declare(strict_types = 1);
 
 namespace CortexPE\network;
 
+use CortexPE\item\enchantment\Enchantment;
 use pocketmine\inventory\FurnaceRecipe;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\inventory\ShapelessRecipe;
@@ -36,12 +37,14 @@ use pocketmine\network\mcpe\protocol\ProtocolInfo;
 class CraftingDataPacket extends PMCraftingDataPacket {
 	public const NETWORK_ID = ProtocolInfo::CRAFTING_DATA_PACKET;
 
-	public const ENTRY_SHAPELESS = 0;
-	public const ENTRY_SHAPED = 1;
-	public const ENTRY_FURNACE = 2;
-	public const ENTRY_FURNACE_DATA = 3;
-	public const ENTRY_ENCHANT_LIST = 4; //TODO
-	public const ENTRY_SHULKER_BOX = 5; //TODO
+	/** @var int */
+	public const
+        ENTRY_SHAPELESS = 0,
+        ENTRY_SHAPED = 1,
+        ENTRY_FURNACE = 2,
+        ENTRY_FURNACE_DATA = 3,
+        ENTRY_ENCHANT_LIST = 4, //TODO
+        ENTRY_SHULKER_BOX = 5; //TODO
 
 	/** @var object[] */
 	public $entries = [];
@@ -188,7 +191,8 @@ class CraftingDataPacket extends PMCraftingDataPacket {
 			$entry = $list->getSlot($i);
 			$stream->putUnsignedVarInt($entry->getCost());
 			$stream->putUnsignedVarInt(count($entry->getEnchantments()));
-			foreach($entry->getEnchantments() as $enchantment){
+			/** @var Enchantment $enchantment */
+            foreach($entry->getEnchantments() as $enchantment){
 				$stream->putUnsignedVarInt($enchantment->getId());
 				$stream->putUnsignedVarInt(mt_rand(1,$enchantment->getMaxLevel()));
 			}

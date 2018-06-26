@@ -41,11 +41,13 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\tile\Tile as PMTile;
 
 class Tile extends PMTile {
-	const BEACON = "Beacon";
-	const MOB_SPAWNER = "MobSpawner";
-	const SHULKER_BOX = "ShulkerBox";
-	const HOPPER = "Hopper";
-	const JUKEBOX = "Jukebox";
+    /** @var string */
+	public const
+        BEACON = "Beacon",
+        MOB_SPAWNER = "MobSpawner",
+        SHULKER_BOX = "ShulkerBox",
+        HOPPER = "Hopper",
+        JUKEBOX = "Jukebox";
 
 	public static function init(){
 		Main::getPluginLogger()->debug("Registering Tiles...");
@@ -56,25 +58,15 @@ class Tile extends PMTile {
 		self::registerTile(BrewingStand::class);
 
 		if(!Utils::isPhared()){ // beta
-			self::registerTile(Jukebox::class);
+            self::registerTile(Jukebox::class);
 		}
 	}
 
-    /**
-     * Reads additional data from the CompoundTag on tile creation.
-     *
-     * @param CompoundTag $nbt
-     */
-    protected function readSaveData(CompoundTag $nbt): void {
-        // TODO: Implement readSaveData() method.
+    protected function readSaveData(CompoundTag $nbt): void
+    {
     }
 
-    /**
-     * Writes additional save data to a CompoundTag, not including generic things like ID and coordinates.
-     *
-     * @param CompoundTag $nbt
-     */
-    protected function writeSaveData(CompoundTag $nbt): void {
-        // TODO: Implement writeSaveData() method.
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
     }
 }

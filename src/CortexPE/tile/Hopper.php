@@ -60,13 +60,15 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 
 	/** @var HopperInventory */
 	private $inventory = null;
+	/** @var CompoundTag */
+	private $nbt;
 
 	public function __construct(Level $level, CompoundTag $nbt){
 		parent::__construct($level, $nbt);
 
 		$this->inventory = new HopperInventory($this);
 
-		$this->loadItems();
+		$this->loadItems($nbt);
 		$this->scheduleUpdate();
 	}
 
@@ -262,25 +264,17 @@ class Hopper extends Spawnable implements InventoryHolder, Container, Nameable {
 		}
 	}
 
-	public function saveNBT(): CompoundTag {
-        $this->saveItems();
+	public function saveNBT(): CompoundTag{
+        $this->saveItems($this->nbt);
+		return parent::saveNBT();
+	}
+
+    protected function readSaveData(CompoundTag $nbt): void
+    {
+        $this->nbt = $nbt;
     }
 
-    /**
-     * Reads additional data from the CompoundTag on tile creation.
-     *
-     * @param CompoundTag $nbt
-     */
-    protected function readSaveData(CompoundTag $nbt): void {
-        // TODO: Implement readSaveData() method.
-    }
-
-    /**
-     * Writes additional save data to a CompoundTag, not including generic things like ID and coordinates.
-     *
-     * @param CompoundTag $nbt
-     */
-    protected function writeSaveData(CompoundTag $nbt): void {
-        // TODO: Implement writeSaveData() method.
+    protected function writeSaveData(CompoundTag $nbt): void
+    {
     }
 }

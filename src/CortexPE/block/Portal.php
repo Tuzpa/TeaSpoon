@@ -27,7 +27,7 @@ use CortexPE\Main;
 use CortexPE\task\DelayedCrossDimensionTeleportTask;
 use CortexPE\Utils;
 use pocketmine\{
-	Player, Server
+	Player
 };
 use pocketmine\block\{
 	Air, Block, BlockToolType, Transparent
@@ -45,11 +45,11 @@ class Portal extends Transparent {
 	/** @var int $id */
 	protected $id = Block::PORTAL;
 
-	public function __construct($meta = 0) {
-        $this->meta = $meta;
-    }
+	public function __construct($meta = 0){
+		$this->meta = $meta;
+	}
 
-    /**
+	/**
 	 * @return string
 	 */
 	public function getName(): string{
@@ -174,6 +174,7 @@ class Portal extends Transparent {
 			if($entity->getLevel()->getSafeSpawn()->distance($entity->asVector3()) <= 0.1){
 				return;
 			}
+            $plug = Main::getInstance();
 			if(!isset(Main::$onPortal[$entity->getId()])){
 				Main::$onPortal[$entity->getId()] = true;
 				if($entity instanceof Player){
@@ -210,11 +211,10 @@ class Portal extends Transparent {
 								}
 								$posNether->setComponents($x, $y, $z);
 							}
-
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 20 * 4);
+								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::NETHER, $posNether), 1);
+								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::NETHER, $posNether), 1);
 							}
 						}else{ // NETHER -> OVERWORLD
 							$gm = $entity->getGamemode();
@@ -250,9 +250,9 @@ class Portal extends Transparent {
 							}
 
 							if($gm == Player::SURVIVAL || $gm == Player::ADVENTURE){
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
+								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 20 * 4);
 							}else{
-								Server::getInstance()->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask(Main::getInstance(), $entity, DimensionIds::OVERWORLD, $posOverworld), 1);
+								$plug->getScheduler()->scheduleDelayedTask(new DelayedCrossDimensionTeleportTask($entity, DimensionIds::OVERWORLD, $posOverworld), 1);
 							}
 						}
 					}

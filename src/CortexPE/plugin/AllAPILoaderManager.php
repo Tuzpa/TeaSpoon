@@ -36,17 +36,18 @@ declare(strict_types = 1);
 namespace CortexPE\plugin;
 
 use CortexPE\plugin\AllAPI\{
-	FolderPluginLoader, PharPluginLoader, ScriptPluginLoader
+	PharPluginLoader, ScriptPluginLoader, FolderPluginLoader
 };
 use pocketmine\plugin\PluginLoadOrder;
 use pocketmine\Server as PMServer;
+use pocketmine\Server;
 
 class AllAPILoaderManager {
 	public static function init(){
-		PMServer::getInstance()->getPluginManager()->registerInterface(new PharPluginLoader(PMServer::getInstance()));
-		PMServer::getInstance()->getPluginManager()->registerInterface(new ScriptPluginLoader(PMServer::getInstance()));
+		PMServer::getInstance()->getPluginManager()->registerInterface(new PharPluginLoader(Server::getInstance()));
+		PMServer::getInstance()->getPluginManager()->registerInterface(new ScriptPluginLoader(Server::getInstance()));
 		if(self::hasFolderPluginLoader()){
-			PMServer::getInstance()->getPluginManager()->registerInterface(new FolderPluginLoader(PMServer::getInstance()));
+			PMServer::getInstance()->getPluginManager()->registerInterface(new FolderPluginLoader(Server::getInstance()));
 		}
 
 		PMServer::getInstance()->getPluginManager()->loadPlugins(PMServer::getInstance()->getPluginPath(), [PharPluginLoader::class, ScriptPluginLoader::class, FolderPluginLoader::class]);
